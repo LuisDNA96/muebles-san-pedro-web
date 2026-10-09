@@ -50,3 +50,25 @@ Establecer la estructura inicial del sistema web, configurar el entorno de desar
 - Edgar Daniel Jiménez Ceja – Scrum Master
 - Miguel Angel Garcia Aguilar – Frontend / UX-UI
 - Jaime Alberto Padron Reyna – Backend / QA
+
+## Sprint 3 – Búsqueda, filtros y detalle de productos
+
+### Funcionalidades implementadas
+
+- Búsqueda en tiempo real por nombre y descripción, sin distinguir mayúsculas ni acentos.
+- Filtros por las categorías disponibles en el catálogo, combinables con la búsqueda.
+- Limpieza de la búsqueda y mensajes cuando no existen coincidencias.
+- Vista individual en `/productos/:id`, accesible desde cualquier tarjeta.
+- Manejo de productos inexistentes y rutas inválidas.
+- Fuente centralizada de datos para mantener consistencia entre el catálogo y el detalle.
+
+### Instrucciones para probar
+
+1. Ejecuta `npm run dev`.
+2. Abre la ruta `/productos`.
+3. Escribe `sala`, `SALA` o una búsqueda con/sin acento en el buscador.
+4. Selecciona una categoría y comprueba que puede combinarse con el texto.
+5. Usa `Limpiar` y `Todos` para restaurar el catálogo.
+6. Selecciona una tarjeta para abrir su detalle; prueba también `/productos/999` y una ruta inexistente.
+
+El catálogo continúa utilizando las imágenes remotas que ya formaban parte del proyecto. No se incluyen pagos, carrito ni persistencia de datos, ya que corresponden a futuros sprints.

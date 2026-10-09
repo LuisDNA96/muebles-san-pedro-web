@@ -5,57 +5,66 @@
       <p>Conoce algunos de los productos disponibles en Muebles San Pedro.</p>
     </section>
 
-    <div class="categorias">
-      <button>Todos</button>
-      <button>Salas</button>
-      <button>Comedores</button>
-      <button>Recámaras</button>
-      <button>Sillones</button>
+    <div class="catalogo-controles">
+      <label class="search-label" for="product-search">Buscar productos</label>
+      <div class="search-wrapper">
+        <input
+          id="product-search"
+          v-model="busqueda"
+          type="search"
+          placeholder="Busca por nombre o descripción"
+          autocomplete="off"
+        />
+        <button v-if="busqueda" type="button" class="clear-button" aria-label="Limpiar búsqueda" @click="busqueda = ''">
+          Limpiar
+        </button>
+      </div>
+
+      <div class="categorias" aria-label="Filtrar por categoría">
+        <button
+          v-for="categoria in categorias"
+          :key="categoria"
+          type="button"
+          :class="{ activo: categoriaActiva === categoria }"
+          :aria-pressed="categoriaActiva === categoria"
+          @click="categoriaActiva = categoria"
+        >
+          {{ categoria }}
+        </button>
+      </div>
     </div>
 
-    <section class="catalogo">
-      <ProductCard v-for="product in productos" :key="product.id" :product="product" />
+    <section v-if="productosFiltrados.length" class="catalogo" aria-live="polite">
+      <ProductCard v-for="product in productosFiltrados" :key="product.id" :product="product" />
     </section>
+    <p v-else class="sin-resultados" role="status">No encontramos productos con esos criterios. Prueba otra búsqueda o categoría.</p>
   </main>
 </template>
 
 <script setup>
+import { computed, ref } from "vue";
 import ProductCard from "../components/ProductCard.vue";
+import { categorias, productos } from "../data/products";
 
-const productos = [
-  {
-    id: 1,
-    nombre: "Sala contemporánea",
-    categoria: "Salas",
-    descripcion: "Sala diseñada para brindar comodidad y estilo al hogar.",
-    precio: 12500,
-    imagen: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc",
-  },
-  {
-    id: 2,
-    nombre: "Comedor de madera",
-    categoria: "Comedores",
-    descripcion: "Comedor de diseño moderno para espacios familiares.",
-    precio: 9800,
-    imagen: "https://images.unsplash.com/photo-1617806118233-18e1de247200",
-  },
-  {
-    id: 3,
-    nombre: "Recámara matrimonial",
-    categoria: "Recámaras",
-    descripcion: "Conjunto de recámara pensado para brindar comodidad.",
-    precio: 15700,
-    imagen: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-  },
-  {
-    id: 4,
-    nombre: "Sillón individual",
-    categoria: "Sillones",
-    descripcion: "Sillón individual para complementar diferentes espacios.",
-    precio: 4500,
-    imagen: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c",
-  },
-];
+const busqueda = ref("");
+const categoriaActiva = ref("Todos");
+
+function normalizarTexto(texto) {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("es-MX");
+}
+
+const productosFiltrados = computed(() => {
+  const texto = normalizarTexto(busqueda.value.trim());
+
+  return productos.filter((producto) => {
+    const coincideCategoria = categoriaActiva.value === "Todos" || producto.categoria === categoriaActiva.value;
+    const contenido = normalizarTexto(`${producto.nombre} ${producto.descripcion}`);
+    return coincideCategoria && (!texto || contenido.includes(texto));
+  });
+});
 </script>
 
 <style scoped>
@@ -80,6 +89,40 @@ const productos = [
   gap: 30px;
 }
 
+.catalogo-controles {
+  max-width: 800px;
+  margin: 0 auto 35px;
+}
+
+.search-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.search-wrapper {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-wrapper input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #b9b2a7;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.clear-button {
+  padding: 10px 16px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+}
+
 .categorias {
   display: flex;
   justify-content: center;
@@ -102,9 +145,25 @@ const productos = [
   color: white;
 }
 
+.categorias button.activo {
+  background: #333;
+  color: white;
+}
+
+.sin-resultados {
+  padding: 30px;
+  text-align: center;
+  color: #555;
+}
+
 @media (max-width: 768px) {
   .catalogo {
     grid-template-columns: 1fr;
+  }
+
+  .search-wrapper {
+    align-items: stretch;
+    flex-direction: column;
   }
 }
 </style>

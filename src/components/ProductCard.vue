@@ -1,21 +1,23 @@
 <template>
-  <article class="product-card">
-    <img :src="product.imagen" :alt="product.nombre" class="product-image" />
+  <RouterLink :to="{ name: 'producto-detalle', params: { id: product.id } }" class="product-link">
+    <article class="product-card">
+      <img :src="product.imagen" :alt="`Imagen de ${product.nombre}`" class="product-image" />
 
-    <div class="product-info">
-      <span class="product-category">
-        {{ product.categoria }}
-      </span>
+      <div class="product-info">
+        <span class="product-category">
+          {{ product.categoria }}
+        </span>
 
-      <h2>{{ product.nombre }}</h2>
+        <h2>{{ product.nombre }}</h2>
 
-      <p>{{ product.descripcion }}</p>
+        <p>{{ product.descripcion }}</p>
 
-      <p class="product-price">${{ product.precio.toLocaleString("es-MX") }} MXN</p>
+        <p class="product-price">${{ product.precio.toLocaleString("es-MX") }} MXN</p>
 
-      <button>Solicitar información</button>
-    </div>
-  </article>
+        <span class="details-button">Ver detalles</span>
+      </div>
+    </article>
+  </RouterLink>
 </template>
 
 <script setup>
@@ -34,6 +36,11 @@ defineProps({
   overflow: hidden;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
   transition: transform 0.2s;
+}
+
+.product-link {
+  color: inherit;
+  text-decoration: none;
 }
 
 .product-card:hover {
@@ -69,7 +76,8 @@ defineProps({
   color: #222 !important;
 }
 
-button {
+.details-button {
+  display: inline-block;
   border: none;
   padding: 10px 16px;
   border-radius: 6px;
@@ -78,7 +86,7 @@ button {
   color: white;
 }
 
-button:hover {
+.product-link:hover .details-button {
   opacity: 0.85;
 }
 </style>
