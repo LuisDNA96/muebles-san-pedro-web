@@ -30,7 +30,7 @@ function validarSolicitud(body) {
   const mensaje = typeof body.mensaje === "string" ? body.mensaje.trim() : "";
 
   if (!validarTexto(nombre, MAX_LENGTHS.nombre)) {
-    return { error: "El nombre es obligatorio y debe tener como máximo 100 caracteres." };
+    return { error: "Nombre obligatorio y debe tener como máximo 100 caracteres." };
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo) || correo.length > MAX_LENGTHS.correo) {
     return { error: "El correo electrónico no es válido." };
