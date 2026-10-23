@@ -7,7 +7,7 @@
       </section>
 
       <nav class="footer-navigation" aria-label="Navegación del pie de página">
-        <p class="footer-heading">Explora</p>
+        <p class="footer-heading">Explorar</p>
         <RouterLink to="/">Inicio</RouterLink>
         <RouterLink to="/productos">Productos</RouterLink>
         <RouterLink to="/contacto">Contacto</RouterLink>
