@@ -1,6 +1,6 @@
 <template>
-  <RouterLink :to="{ name: 'producto-detalle', params: { id: product.id } }" class="product-link">
-    <article class="product-card">
+  <article class="product-card">
+    <RouterLink :to="{ name: 'producto-detalle', params: { id: product.id } }" class="product-link">
       <img :src="product.imagen" :alt="`Imagen de ${product.nombre}`" class="product-image" />
 
       <div class="product-info">
@@ -16,8 +16,14 @@
 
         <span class="details-button">Ver detalles</span>
       </div>
-    </article>
-  </RouterLink>
+    </RouterLink>
+    <RouterLink
+      :to="{ name: 'contacto', query: { productId: product.id } }"
+      class="request-button"
+    >
+      Solicitar información
+    </RouterLink>
+  </article>
 </template>
 
 <script setup>
@@ -39,6 +45,7 @@ defineProps({
 }
 
 .product-link {
+  display: block;
   color: inherit;
   text-decoration: none;
 }
@@ -88,5 +95,29 @@ defineProps({
 
 .product-link:hover .details-button {
   opacity: 0.85;
+}
+
+.request-button {
+  display: block;
+  margin: 0 20px 20px;
+  padding: 10px 16px;
+  border: 1px solid #263d31;
+  border-radius: 6px;
+  color: #263d31;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.request-button:hover,
+.request-button:focus-visible {
+  background: #263d31;
+  color: white;
+}
+
+.product-link:focus-visible,
+.request-button:focus-visible {
+  outline: 3px solid #dba36a;
+  outline-offset: 3px;
 }
 </style>

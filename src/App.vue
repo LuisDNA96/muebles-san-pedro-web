@@ -19,9 +19,25 @@
   </header>
 
   <RouterView />
+  <AppFooter />
 </template>
 
+<script setup>
+import AppFooter from "./components/AppFooter.vue";
+</script>
+
 <style scoped>
+:global(*) {
+  box-sizing: border-box;
+}
+
+:global(body) {
+  margin: 0;
+  background: #f7f4ee;
+  color: #263d31;
+  font-family: Arial, sans-serif;
+}
+
 .site-header {
   position: relative;
   z-index: 2;
@@ -95,6 +111,12 @@
 .menu a:hover,
 .menu a.router-link-active {
   color: #263d31;
+}
+
+.brand:focus-visible,
+.menu a:focus-visible {
+  outline: 3px solid #dba36a;
+  outline-offset: 4px;
 }
 
 @media (max-width: 700px) {

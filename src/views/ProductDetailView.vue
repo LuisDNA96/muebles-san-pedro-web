@@ -9,6 +9,12 @@
         <h1>{{ producto.nombre }}</h1>
         <p class="detalle-descripcion">{{ producto.descripcion }}</p>
         <p class="detalle-precio">${{ producto.precio.toLocaleString("es-MX") }} MXN</p>
+        <RouterLink
+          :to="{ name: 'contacto', query: { productId: producto.id } }"
+          class="request-button"
+        >
+          Solicitar información
+        </RouterLink>
       </div>
     </section>
 
@@ -81,6 +87,28 @@ const producto = computed(() => obtenerProductoPorId(route.params.id));
   color: #263d31;
   font-size: 1.5rem;
   font-weight: 700;
+}
+
+.request-button {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 12px 18px;
+  border-radius: 6px;
+  background: #263d31;
+  color: white;
+  text-decoration: none;
+}
+
+.request-button:hover,
+.request-button:focus-visible {
+  background: #1b2c23;
+}
+
+.request-button:focus-visible,
+.back-link:focus-visible,
+.back-button:focus-visible {
+  outline: 3px solid #dba36a;
+  outline-offset: 3px;
 }
 
 .producto-no-encontrado {

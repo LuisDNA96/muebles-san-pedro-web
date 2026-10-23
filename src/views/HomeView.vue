@@ -25,17 +25,6 @@
 </template>
 
 <style scoped>
-:global(*) {
-  box-sizing: border-box;
-}
-
-:global(body) {
-  margin: 0;
-  background: #f7f4ee;
-  color: #263d31;
-  font-family: Arial, sans-serif;
-}
-
 .home {
   overflow: hidden;
   background: #f7f4ee;
