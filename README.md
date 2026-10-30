@@ -261,3 +261,106 @@ Mailtrap no es compatible directamente con el webhook genérico actual para gene
 - Servicio sin configurar con respuesta `503`.
 
 Las pruebas visuales en 390 px, 768 px y 1440 px y las pruebas E2E del footer quedan pendientes de ejecutar en un navegador automatizado.
+
+## Sprint 6 – Calidad, integración y estabilidad
+
+### Objetivo del Sprint
+
+Revisar la organización, estabilidad y experiencia de uso de las funcionalidades existentes, sin incorporar funcionalidades comerciales nuevas ni sustituir Vue.js o Vue Router.
+
+### Funcionalidades revisadas y mejoras realizadas
+
+- Se revisaron `App.vue`, las vistas principales, componentes reutilizables, rutas, datos del catálogo, endpoint de contacto y estilos.
+- La lógica de normalización, búsqueda y filtrado se centralizó en `src/data/products.js` para reutilizarla y probarla sin duplicación.
+- Se verificaron identificadores únicos, categorías existentes, selección por `productId` y consistencia entre catálogo, detalle y contacto.
+- Se corrigió la construcción del encabezado `Authorization` del endpoint para usar el token configurado como `Bearer`, sin exponerlo al cliente.
+- El footer mejora su distribución entre 701 y 900 px: la sección social ocupa una fila completa y evita una organización comprimida en tablet.
+- El formulario de contacto aprovecha mejor el espacio disponible en escritorio manteniendo la referencia del producto como columna secundaria.
+- Se añadieron pruebas automatizadas con Vitest para catálogo, búsqueda, filtros, selección de productos y respuestas principales del endpoint.
+
+### Archivos creados o modificados
+
+**Creados**
+
+- `tests/products.test.js`
+- `tests/contact.test.js`
+
+**Modificados**
+
+- `api/contact.js`
+- `package.json`
+- `package-lock.json`
+- `src/data/products.js`
+- `src/views/ProductosView.vue`
+- `src/components/AppFooter.vue`
+- `src/views/ContactoView.vue`
+- `README.md`
+
+### Pruebas de integración y automatizadas
+
+La suite `npm test` ejecuta 9 pruebas Vitest: búsqueda por nombre y descripción, mayúsculas/minúsculas, eliminación de acentos, filtros combinados, ausencia de coincidencias, selección por identificador, validación de JSON y `productId`, receptor no configurado, receptor exitoso y fallo del receptor.
+
+También se ejecutaron `npm run build`, `npx eslint . --no-cache`, `npx oxlint .` y `git diff --check`. Estas verificaciones no sustituyen una prueba funcional completa en navegador. No se configuró Playwright ni se ejecutaron pruebas E2E durante este sprint.
+
+### Resultados responsive y accesibilidad
+
+Se revisaron los puntos de quiebre declarados en el código y se aplicaron ajustes para tablet y escritorio. No se declara ejecutada una inspección visual real a 390 × 844, 768 × 1024 o 1440 × 900 px porque no se utilizó un navegador automatizado ni Responsively App durante esta sesión. La comprobación visual pendiente debe incluir desplazamiento horizontal, foco de teclado, contraste, botones, tarjetas, formulario, footer y rutas.
+
+### Errores detectados y corregidos
+
+- **S6-01 — Encabezado de autorización inválido:** `api/contact.js` contenía una construcción incompleta del valor `Authorization`, aunque el build del frontend no analiza funciones serverless. Se reemplazó por `Bearer ${CONTACT_WEBHOOK_TOKEN}` y se cubrió el envío exitoso con una prueba mock del receptor.
+
+No se detectaron duplicados de productos, identificadores inconsistentes ni enlaces sociales funcionales falsos. El análisis de dependencias realizado por `npm install` informó 6 vulnerabilidades transitivas; no se ejecutó `npm audit fix --force` para evitar cambios fuera del alcance y requieren revisión independiente.
+
+### Estado, limitaciones y pendientes
+
+- **Completado:** revisión estructural, mejora de la fuente de datos, lógica de búsqueda/filtros, corrección del endpoint, pruebas unitarias del catálogo y endpoint, documentación y ajustes CSS focalizados.
+- **Parcial:** navegación, flujo completo de contacto y responsive; falta ejecutarlos en navegador real o automatizado.
+- **Pendiente:** pruebas E2E, verificación visual en las tres resoluciones, prueba con un receptor autorizado, proveedor de correo definitivo, rate limiting, antispam, política de privacidad y revisión de vulnerabilidades de dependencias.
+
+### Evidencias recomendadas
+
+1. Captura de `src/components`, `src/views`, `src/data` y `api` en el explorador del IDE, sin mostrar archivos `.env`.
+2. Catálogo con todos los productos y una captura de búsqueda combinada con categoría.
+3. Flujo Productos → Detalle → Contacto con `productId` visible y datos ficticios.
+4. Página de ruta inexistente y navegación del encabezado/footer.
+5. Salida de `npm test` mostrando 9 pruebas aprobadas.
+6. Salida de `npm run build`, ESLint, Oxlint y `git diff --check`.
+7. Capturas a 390, 768 y 1440 px usando datos ficticios; no incluir tokens, correos reales ni URLs privadas.
+8. Diff de `api/contact.js` y la prueba automatizada del receptor mock para documentar S6-01.
+9. `git status` y `git diff --stat` para evidenciar cambios sin realizar commit o push.
+
+### Informe: Resultados del sexto Sprint – Muebles San Pedro
+
+| Actividad | Resultado real | Estado | Evidencia |
+|---|---|---|---|
+| Revisión de estructura y componentes | Se revisaron vistas, componentes, rutas, datos, endpoint y CSS; se eliminó duplicación de la lógica de catálogo. | Completado | `src/data/products.js`, `src/views/ProductosView.vue` |
+| Mejoras del catálogo | Se mantuvieron los cuatro productos existentes y se verificaron IDs, categorías, precios, imágenes y selección. | Completado | `tests/products.test.js` |
+| Verificación de búsqueda y filtros | Búsqueda normalizada, filtros combinados, limpieza y cero coincidencias cubiertos por pruebas. | Completado | `npm test` |
+| Revisión de navegación | Las rutas y enlaces fueron revisados estáticamente; falta recorrido en navegador. | Parcial | `src/router/index.js`, evidencias manuales pendientes |
+| Pruebas de integración | Endpoint cubierto con solicitudes válidas, inválidas, sin receptor y receptor fallido; no hubo E2E. | Parcial | `tests/contact.test.js` |
+| Evaluación responsive | Se ajustaron footer tablet y ancho del formulario; falta validación visual ejecutada en las tres resoluciones. | Parcial | `AppFooter.vue`, `ContactoView.vue` |
+| Corrección de errores | Se detectó y corrigió S6-01, con prueba de regresión del encabezado. | Completado | `api/contact.js`, `tests/contact.test.js` |
+| Actualización de documentación | Se agregó esta sección conservando la documentación previa y Webhook.site. | Completado | `README.md` |
+
+#### Métricas
+
+- Actividades planeadas: **8**.
+- Actividades completadas: **5**.
+- Porcentaje de cumplimiento: **62.5 %**.
+- Errores detectados: **1**.
+- Errores corregidos: **1**.
+- Errores pendientes: **0** de los detectados en este sprint.
+- Pruebas automatizadas ejecutadas: **9**, aprobadas **9**, fallidas **0**.
+- Verificaciones estáticas ejecutadas: **4**, aprobadas **4**: build, ESLint, Oxlint y `git diff --check`.
+- Pruebas manuales en navegador: **0** ejecutadas.
+- Pruebas E2E: **0** ejecutadas.
+- Pruebas no ejecutadas: recorridos manuales completos, responsive visual automatizado y entrega a receptor externo autorizado.
+
+#### Actividades para Sprint 7
+
+Transferir las pruebas generales en navegador, la incorporación de E2E, la corrección de cualquier incidencia visual pendiente, la optimización visual final, la revisión de dependencias, la documentación final y la evaluación de preparación para entrega. No se implementaron automáticamente en este sprint.
+
+#### Mensaje de commit sugerido
+
+`feat: improve sprint 6 quality checks and integration tests`

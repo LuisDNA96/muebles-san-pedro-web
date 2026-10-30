@@ -195,4 +195,15 @@ const redesSociales = [
     justify-content: flex-start;
   }
 }
+
+@media (min-width: 701px) and (max-width: 900px) {
+  .footer-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+  }
+
+  .footer-social {
+    grid-column: 1 / -1;
+  }
+}
 </style>

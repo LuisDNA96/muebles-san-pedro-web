@@ -240,7 +240,7 @@ function editarFormulario() {
 
 <style scoped>
 .contacto {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: auto;
   padding: 50px 30px 70px;
 }
@@ -267,7 +267,7 @@ function editarFormulario() {
 
 .contacto-layout {
   display: grid;
-  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.2fr);
+  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.3fr);
   gap: 42px;
   align-items: start;
 }

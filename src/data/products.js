@@ -35,6 +35,23 @@ export const productos = [
 
 export const categorias = ["Todos", ...new Set(productos.map((producto) => producto.categoria))];
 
+export function normalizarTexto(texto) {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("es-MX");
+}
+
+export function filtrarProductos(lista, busqueda = "", categoria = "Todos") {
+  const texto = normalizarTexto(busqueda.trim());
+
+  return lista.filter((producto) => {
+    const coincideCategoria = categoria === "Todos" || producto.categoria === categoria;
+    const contenido = normalizarTexto(`${producto.nombre} ${producto.descripcion}`);
+    return coincideCategoria && (!texto || contenido.includes(texto));
+  });
+}
+
 export function obtenerProductoPorId(id) {
   return productos.find((producto) => String(producto.id) === String(id));
 }

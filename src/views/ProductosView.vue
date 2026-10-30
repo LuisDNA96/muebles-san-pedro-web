@@ -44,26 +44,13 @@
 <script setup>
 import { computed, ref } from "vue";
 import ProductCard from "../components/ProductCard.vue";
-import { categorias, productos } from "../data/products";
+import { categorias, filtrarProductos, productos } from "../data/products";
 
 const busqueda = ref("");
 const categoriaActiva = ref("Todos");
 
-function normalizarTexto(texto) {
-  return texto
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLocaleLowerCase("es-MX");
-}
-
 const productosFiltrados = computed(() => {
-  const texto = normalizarTexto(busqueda.value.trim());
-
-  return productos.filter((producto) => {
-    const coincideCategoria = categoriaActiva.value === "Todos" || producto.categoria === categoriaActiva.value;
-    const contenido = normalizarTexto(`${producto.nombre} ${producto.descripcion}`);
-    return coincideCategoria && (!texto || contenido.includes(texto));
-  });
+  return filtrarProductos(productos, busqueda.value, categoriaActiva.value);
 });
 </script>
 
