@@ -364,3 +364,19 @@ Transferir las pruebas generales en navegador, la incorporación de E2E, la corr
 #### Mensaje de commit sugerido
 
 `feat: improve sprint 6 quality checks and integration tests`
+
+## Sprint 7 – Revisión final y preparación para entrega
+
+### Objetivo
+
+Cerrar la revisión del sistema sin añadir funcionalidades comerciales ajenas al alcance, comprobar las funciones acumuladas y preparar una versión demostrable con resultados verificables.
+
+### Resultado
+
+Se revisaron la estructura, el catálogo, la búsqueda, los filtros, las rutas, el formulario, el endpoint, el footer, la configuración, los archivos ignorados y la documentación. Las **9 pruebas Vitest**, el build, ESLint, Oxlint y `git diff --check` finalizaron correctamente. No se detectaron errores nuevos reproducibles.
+
+La navegación, el contacto y la preparación final quedaron **parciales** porque no hay Playwright instalado, no se ejecutaron recorridos visuales reales a 390 × 844, 768 × 1024 y 1440 × 900, y no existe un receptor externo autorizado para confirmar entrega de correo. Instagram, Facebook y WhatsApp permanecen como **Próximamente**.
+
+`npm audit --omit=dev` reportó 2 vulnerabilidades altas; el análisis completo reportó 10 (3 críticas, 2 altas y 5 moderadas), sin ejecutar `npm audit fix --force`. El detalle, las métricas, las evidencias y la propuesta de Sprint Review están en [`docs/RESULTADOS-SPRINT-7.md`](./docs/RESULTADOS-SPRINT-7.md). También se añadió [`.env.example`](./.env.example) con nombres y valores ilustrativos, sin secretos.
+
+Ambas URLs documentadas de Vercel respondieron HTTP 200 durante la revisión, pero no fue posible demostrar cuál es la dirección canónica ni qué commit está desplegado. No se modificó producción ni se hizo commit o push.
